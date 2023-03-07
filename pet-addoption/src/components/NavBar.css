@@ -1,11 +1,40 @@
-.navBar {
-  width: 40%;
-  height: 50px;
-  color: aliceblue;
-  background-color: gray;
+.navbar {
   display: flex;
-  justify-content: flex-start;
-  border-radius: 6px;
-  position: relative;
-  left: 31%;
+  gap: 4rem;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #ff7cbb;
+  height: 60px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.navbar__logo {
+  color: white;
+}
+.navbar__link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.navbar__link-btn {
+  background-color: #ff03dd;
+  padding: 0.4rem;
+  width: 5rem;
+  border-radius: 15px;
+}
+.navbar__links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+}
+
+.navbar__profile {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 1rem;
 }

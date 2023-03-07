@@ -20,8 +20,6 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
-      <NavBar />
-      <h2>Welcome To Pet Rescue and Adopt</h2>
       <RouterProvider router={router} />
     </div>
   );
