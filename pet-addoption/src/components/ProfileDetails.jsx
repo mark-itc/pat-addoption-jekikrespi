@@ -1,13 +1,50 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./Login.css";
-import axios from "axios";
 
-function Signup({ setIsOpen }) {
+function ProfileDetails({ setIsOpen }) {
+  const userData = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (!localStorage.getItem("token")) {
       window.location.href = "/";
     }
+    setFormData({
+      ...Object.fromEntries(
+        Object.entries(userData).filter(
+          ([key]) =>
+            !key.includes("_id") &&
+            !key.includes("role") &&
+            !key.includes("password") &&
+            !key.includes("__v")
+        )
+      ),
+    });
   }, []);
+
+  const handleProfileChange = async () => {
+    try {
+      console.log(formData);
+      const res = await axios.put(
+        `http://localhost:8080/user/update/${userData._id}`,
+        formData,
+        {
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+          },
+        }
+      );
+      setFeedback({
+        color: "green",
+        content: "profile updated successfully.",
+      });
+    } catch (err) {
+      setFeedback({
+        color: "red",
+        content: err.response.data?.message,
+      });
+    }
+  };
 
   const [feedback, setFeedback] = useState({
     color: "green",
@@ -19,35 +56,17 @@ function Signup({ setIsOpen }) {
   const handleFormChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSignup = async () => {
-    try {
-      console.log(formData);
-      const res = await axios.post(
-        "http://localhost:8080/user/signup",
-        formData
-      );
-      setFeedback({
-        color: "green",
-        content: "signed up successfully. please log in",
-      });
-    } catch (err) {
-      setFeedback({
-        color: "red",
-        content: err.response.data?.message,
-      });
-    }
-  };
-
   return (
     <div className="login__card">
       <span onClick={() => setIsOpen(false)}>x</span>
       <div className="card__top">
-        <h2>Signup</h2>
+        <h2>Profile Details</h2>
       </div>
       <div className="card__content">
         <input
           className="card__input"
           name="name"
+          value={formData.name}
           onChange={(e) => handleFormChange(e)}
           type="text"
           placeholder="first name"
@@ -56,6 +75,7 @@ function Signup({ setIsOpen }) {
         <input
           className="card__input"
           name="lastname"
+          value={formData.lastname}
           onChange={(e) => handleFormChange(e)}
           type="text"
           placeholder="last name"
@@ -64,6 +84,7 @@ function Signup({ setIsOpen }) {
         <input
           className="card__input"
           name="email"
+          value={formData.email}
           onChange={(e) => handleFormChange(e)}
           type="email"
           placeholder="email"
@@ -74,11 +95,11 @@ function Signup({ setIsOpen }) {
           name="password"
           onChange={(e) => handleFormChange(e)}
           type="password"
-          placeholder="password"
+          placeholder="new password"
           required
         />
-        <button className="card__btn" onClick={() => handleSignup()}>
-          Signup
+        <button className="card__btn" onClick={() => handleProfileChange()}>
+          Save Changes
         </button>
       </div>
       <p style={{ color: feedback.color }} className="card__feedback">
@@ -88,4 +109,4 @@ function Signup({ setIsOpen }) {
   );
 }
 
-export default Signup;
+export default ProfileDetails;

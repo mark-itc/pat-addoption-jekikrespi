@@ -18,7 +18,7 @@ const updateUserSchema = joi.object({
   email: joi.string().email(),
   password: joi.string().min(6).max(24),
   role: joi.number(),
-  lastName: joi.string(),
+  lastname: joi.string(),
   pets: joi.array(),
   savedPets: joi.array(),
 });

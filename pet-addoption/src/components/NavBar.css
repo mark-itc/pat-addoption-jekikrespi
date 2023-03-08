@@ -10,20 +10,31 @@
 
 .navbar__logo {
   color: white;
-}
-.navbar__link {
-  color: #ffffff;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 22px;
   font-weight: 500;
 }
 
+.navbar__link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
 .navbar__link-btn {
-  background-color: #ff03dd;
-  padding: 0.4rem;
+  background-color: #1c03ffa1;
+  padding: 0.2rem;
   width: 5rem;
   border-radius: 15px;
+  cursor: pointer;
 }
+
+.navbar__link-btn:hover {
+  background-color: #ff03dd7a;
+}
+
 .navbar__links {
   display: flex;
   gap: 1rem;

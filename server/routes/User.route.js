@@ -37,7 +37,7 @@ router.post("/login", validationSchema, async (req, res) => {
   if (user[0].password == sha256(password)) {
     //tokenize
     const token = jwt.sign({ id: user[0]._id }, "secret123");
-    res.status(200).json({ token });
+    res.status(200).json({ token, user: user[0] });
   } else {
     res.status(400).json({ message: "Invalid email or password" });
   }

@@ -1,19 +1,27 @@
 import "./App.css";
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import NavBar from "./components/NavBar";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
 import HomePage from "./views/HomePage";
+import SearchPage from "./views/SearchPage";
+import PetDetails from "./views/PetDetails";
+import MyPets from "./views/MyPets";
 
 const router = createBrowserRouter([
   {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
     path: "/",
     element: <HomePage />,
+  },
+  {
+    path: "/searchpet",
+    element: <SearchPage />,
+  },
+  {
+    path: "/petdetails/:id",
+    element: <PetDetails />,
+  },
+  {
+    path: "/mypets",
+    element: <MyPets />,
   },
 ]);
 

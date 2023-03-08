@@ -7,12 +7,14 @@ const userRouter = require("./routes/User.route");
 const petRouter = require("./routes/Pet.route");
 const multer = require("multer");
 const path = require("path");
+const cors = require("cors");
 
 mongoose.connect(
   "mongodb+srv://jeki:Aa1234567@cluster0.1l6ii6r.mongodb.net/petaddoption?retryWrites=true&w=majority",
   {}
 );
 
+app.use(cors());
 app.use(express.json());
 // Add user router
 app.use("/user", userRouter);
@@ -57,5 +59,4 @@ app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-app.use(express.static(__dirname + "/public"));
-app.use("/images", express.static("images"));
+app.use(express.static(path.join(__dirname, "public")));

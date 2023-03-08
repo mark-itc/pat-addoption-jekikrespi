@@ -29,7 +29,6 @@ const getUserById = async (userId) => {
 
 const updateUser = async (user) => {
   //hash the new password
-  let hashedPassword;
   const updatedUser = await User.findByIdAndUpdate(user._id, {
     ...user,
     password: user.password ? sha256(user.password) : undefined,

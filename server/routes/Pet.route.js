@@ -20,12 +20,12 @@ const router = express.Router();
 
 // Create pet
 router.post("/create", [authMiddleware, validationSchema], async (req, res) => {
-  if (req.user.role !== 2)
-    return res.status(401).json({ message: "Access denied." });
+  // if (req.user.role !== 2)
+  //   return res.status(401).json({ message: "Access denied." });
 
   const fields = req.body;
 
-  const pet = await createPet({ ...fields });
+  const pet = await createPet(fields);
 
   res.status(200).json(pet);
 });

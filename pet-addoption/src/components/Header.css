@@ -22,7 +22,11 @@
   background-color: #62abff;
   padding: 0.4rem;
   width: 9rem;
-  border-radius: 15px;
+  border-radius: 12px;
+}
+
+.header__link:hover {
+  background-color: #3f99ff;
 }
 
 .header__text {
