@@ -52,7 +52,7 @@ const upload = multer({
 });
 
 app.post("/uploadPic", upload.single("image"), (req, res) => {
-  res.send(`/${req.file.path}`);
+  res.send(`${req.file.path.split('\\').slice(1).join('\\')}`);
 });
 
 app.listen(PORT, async () => {

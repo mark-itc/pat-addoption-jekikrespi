@@ -34,7 +34,8 @@ const updateUser = async (user) => {
     password: user.password ? sha256(user.password) : undefined,
   });
 
-  return updatedUser;
+
+  return { ...updatedUser?._doc, ...user, password: user.password ? sha256(user.password) : undefined, __v: undefined, $__: undefined, $isNew: undefined };
 };
 
 const deleteUser = async (id) => {
@@ -65,11 +66,8 @@ const addPetToUser = async (userId, petId) => {
   console.log("userId", userId);
   const user = await getUserById(userId);
   console.log("user", user);
-  const pets = user.pets || [];
 
-  pets.push(petId);
-
-  return updateUser({ ...user, pets });
+  return updateUser({ ...user, pets: [...user.pets, petId] });
 };
 
 const removePetFromUser = async (userId, petId) => {
@@ -81,23 +79,20 @@ const removePetFromUser = async (userId, petId) => {
   return updateUser({ ...user, pets: newPets });
 };
 
-const saveForLater = async ({ userId, petId }) => {
-  const user = await getUserById({ userId })[0];
+const saveForLater = async (userId, petId) => {
+  console.log(userId)
+  const user = await getUserById(userId);
   const savedPets = user.savedPets;
 
-  savedPets.push(petId);
-
-  return updateUser({ ...user, savedPets });
+  await User.findByIdAndUpdate(userId, { savedPets: [...savedPets, petId] })
 };
 
-const unsaveForLater = async ({ userId, petId }) => {
-  const user = await getUserById({ userId })[0];
+const unsaveForLater = async (userId, petId) => {
+  const user = await getUserById(userId);
 
   const savedPets = user.savedPets;
 
-  const newSavedPets = savedPets.filter((pet) => pet != petId);
-
-  return updateUser({ ...user, savedPets: newSavedPets });
+  await User.findByIdAndUpdate(userId, { savedPets: savedPets.filter((pet) => pet != petId) })
 };
 
 module.exports = {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import PetsList from "../components/PetsList";
 import StatusFilter from "../components/StatusFilter";
@@ -10,11 +10,13 @@ function MyPets() {
       window.location.href = "/";
     }
   }, []);
+
+  const [ownerSwitch, setOwnerSwitch] = useState(false)
   return (
     <div>
       <NavBar />
-      <StatusFilter />
-      <PetsList />
+      <StatusFilter ownerSwitch={ownerSwitch} setOwnerSwitch={setOwnerSwitch} />
+      <PetsList ownerSwitch={ownerSwitch} owner={true} />
     </div>
   );
 }

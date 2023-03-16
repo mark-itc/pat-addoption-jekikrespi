@@ -5,13 +5,19 @@ const PetSchema = new mongoose.Schema({
   type: String,
   breed: String,
   age: Number,
-  status: String,
+  status: {
+    type: String,
+    default: "available"
+  },
   bio: String,
   image: String,
   height: Number,
   weight: Number,
   color: String,
-  hypoallergenic: Boolean,
+  hypoallergenic: {
+    type: Boolean,
+    default: false
+  },
   dietaryRestrictions: String,
 });
 

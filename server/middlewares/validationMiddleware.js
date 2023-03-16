@@ -5,7 +5,7 @@ const signupSchema = joi.object({
   email: joi.string().email().required(),
   password: joi.string().required().min(6).max(24),
   role: joi.number(),
-  lastName: joi.string().required(),
+  lastname: joi.string().required(),
 });
 
 const loginSchema = joi.object({
@@ -21,6 +21,8 @@ const updateUserSchema = joi.object({
   lastname: joi.string(),
   pets: joi.array(),
   savedPets: joi.array(),
+  $__: joi.object(),
+  $isNew: joi.boolean()
 });
 
 const createPetSchema = joi.object({
@@ -55,6 +57,7 @@ const updatePetSchema = joi.object({
 
 const statusChangerSchema = joi.object({
   petId: joi.string().required(),
+  userId: joi.string()
 });
 
 const queryIdSchema = joi.object({

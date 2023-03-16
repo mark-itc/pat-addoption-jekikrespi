@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./Login.css";
 
-function ProfileDetails({ setIsOpen }) {
-  const userData = JSON.parse(localStorage.getItem("user"));
+function ProfileDetails({ setIsOpen, options }) {
+  const userData = options?.userData || JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -34,6 +34,7 @@ function ProfileDetails({ setIsOpen }) {
           },
         }
       );
+      localStorage.setItem("user", JSON.stringify(res.data))
       setFeedback({
         color: "green",
         content: "profile updated successfully.",

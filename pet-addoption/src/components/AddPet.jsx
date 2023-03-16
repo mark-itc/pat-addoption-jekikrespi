@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./AddPet.css";
-function AddPet({ setIsOpen }) {
+function AddPet({ setIsOpen, options }) {
+
+  const isUpdate = options.updateId
+
   useEffect(() => {
     if (
       !localStorage.getItem("token") ||
@@ -16,10 +19,13 @@ function AddPet({ setIsOpen }) {
     content: "",
   });
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({ ...options?.pet });
 
-  const handleFormChange = (e) =>
+  const handleFormChange = (e) => {
+    console.log({ [e.target.name]: e.target.value })
+
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
 
   const handleAddPet = async () => {
     try {
@@ -36,18 +42,19 @@ function AddPet({ setIsOpen }) {
           },
         }
       );
-      setFormData({ ...formData, image: res.data });
+      setFormData({ ...formData, image: `${res.data}` })
     } catch (err) {
       console.log(err);
-      return setFeedback({
-        color: "red",
-        content: "error uploading image.",
-      });
+      if (!isUpdate)
+        return setFeedback({
+          color: "red",
+          content: "error uploading image.",
+        });
     }
     try {
       console.log(formData);
-      const res = await axios.post(
-        "http://localhost:8080/pet/create",
+      const secondRes = await axios.post(
+        !options.updateId ? "http://localhost:8080/pet/create" : "http://localhost:8080/pet/updatePet/" + options.updateId,
         formData,
         {
           headers: {
@@ -57,7 +64,7 @@ function AddPet({ setIsOpen }) {
       );
       setFeedback({
         color: "green",
-        content: "pet added successfully.",
+        content: `pet ${isUpdate ? "updated" : "added"} successfully.`,
       });
     } catch (err) {
       setFeedback({
@@ -76,14 +83,16 @@ function AddPet({ setIsOpen }) {
       <div className="card__content">
         <select
           className="searchContainer__filter"
-          onSelect={(e) => handleFormChange(e)}
+          name="status"
+          onChange={(e) => handleFormChange(e)}
+          value={formData.status}
         >
-          <option disabled hidden selected value="">
+          <option disabled hidden value="">
             status
           </option>
-          <option value="cat">adopted</option>
-          <option value="dog">fostered</option>
-          <option value="bunny">available</option>
+          <option value="adopted">adopted</option>
+          <option value="fostered">fostered</option>
+          <option value="available">available</option>
         </select>
         <input
           className="card__input"
@@ -92,6 +101,8 @@ function AddPet({ setIsOpen }) {
           type="text"
           placeholder="name"
           required
+          value={formData.name}
+
         />
         <input
           className="card__input"
@@ -100,6 +111,8 @@ function AddPet({ setIsOpen }) {
           type="text"
           placeholder="type"
           required
+          value={formData.type}
+
         />
 
         <input
@@ -109,6 +122,8 @@ function AddPet({ setIsOpen }) {
           type="text"
           placeholder="breed"
           required
+          value={formData.breed}
+
         />
         <input
           className="card__input"
@@ -117,6 +132,8 @@ function AddPet({ setIsOpen }) {
           type="number"
           placeholder="age"
           required
+          value={formData.age}
+
         />
         <input
           className="card__input"
@@ -125,6 +142,8 @@ function AddPet({ setIsOpen }) {
           type="number"
           placeholder="height"
           required
+          value={formData.height}
+
         />
         <input
           className="card__input"
@@ -133,6 +152,8 @@ function AddPet({ setIsOpen }) {
           type="number"
           placeholder="weight"
           required
+          value={formData.weight}
+
         />
         <input
           className="card__input"
@@ -141,6 +162,8 @@ function AddPet({ setIsOpen }) {
           type="text"
           placeholder="color"
           required
+          value={formData.color}
+
         />
         <input
           className="card__input"
@@ -149,6 +172,8 @@ function AddPet({ setIsOpen }) {
           type="text"
           placeholder="Dietary restrictions"
           required
+          value={formData.dietaryRestrictions}
+
         />
         <input
           className="card__input"
@@ -157,6 +182,8 @@ function AddPet({ setIsOpen }) {
           type="text"
           placeholder="bio"
           required
+          value={formData.bio}
+
         />
         <input
           className="card__input"
@@ -164,12 +191,15 @@ function AddPet({ setIsOpen }) {
           type="file"
           id="file"
           placeholder="image"
-          required
+          required={!isUpdate}
+
         />
         <div className="hypoallergenicContainer">
           <label class="switch">
             <input
               type="checkbox"
+              value={formData.hypoallergenic}
+
               name="hypoallergenic"
               onChange={(e) =>
                 setFormData({ ...formData, hypoallergenic: e.target.checked })
@@ -180,7 +210,7 @@ function AddPet({ setIsOpen }) {
           <small>Hypoallergenic? </small>
         </div>
         <button className="card__btn" onClick={() => handleAddPet()}>
-          Add Pet
+          {isUpdate ? 'Update' : 'Add'} Pet
         </button>
       </div>
       <p style={{ color: feedback.color }} className="card__feedback">

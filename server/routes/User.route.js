@@ -23,9 +23,9 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/signup", validationSchema, async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, lastname, password, role } = req.body;
 
-  const user = await createUser({ name, email, password, role });
+  const user = await createUser({ name, email, lastname, password, role });
 
   res.status(200).json(user);
 });
@@ -44,8 +44,7 @@ router.post("/login", validationSchema, async (req, res) => {
 });
 
 router.get("/getAll", authMiddleware, async (req, res) => {
-  if (req.user.role !== 2)
-    return res.status(401).json({ message: "Access denied." });
+  if (req.user.role !== "2") { return res.status(401).json({ message: "Access denied." }) }
   const users = await getUsers();
 
   res.status(200).json(users);
@@ -72,7 +71,7 @@ router.put(
 );
 
 router.delete("/delete/:id", authMiddleware, async (req, res) => {
-  if (req.user.role !== 2)
+  if (req.user.role != 2)
     return res.status(401).json({ message: "Access denied." });
 
   const { id } = req.params;

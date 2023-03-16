@@ -12,7 +12,7 @@ const createPet = async (fields) => {
   return pet;
 };
 
-const getPetById = async ({ id }) => {
+const getPetById = async (id) => {
   const pet = await Pet.findById(id);
 
   return pet;
@@ -39,9 +39,7 @@ const getPets = async () => {
 };
 
 const updatePetStatus = async (status, id) => {
-  const user = await getPetById(id)[0];
-
-  return updatePet({ ...user, status });
+  return Pet.findByIdAndUpdate(id, { status })
 };
 
 module.exports = {

@@ -30,7 +30,7 @@ router.post("/create", [authMiddleware, validationSchema], async (req, res) => {
   res.status(200).json(pet);
 });
 
-router.get("/getById/:id", authMiddleware, async (req, res) => {
+router.get("/getById/:id", async (req, res) => {
   const { id } = req.params;
 
   const pet = await getPetById(id);
@@ -38,8 +38,8 @@ router.get("/getById/:id", authMiddleware, async (req, res) => {
   res.status(200).json(pet);
 });
 
-router.put(
-  "/update/:id",
+router.post(
+  "/updatePet/:id",
   [authMiddleware, validationSchema],
   async (req, res) => {
     const { id } = req.params;
@@ -53,11 +53,11 @@ router.put(
 );
 
 router.delete("/delete/:id", authMiddleware, async (req, res) => {
-  if (req.user.role !== 2)
+  if (req.user.role != 2)
     return res.status(401).json({ message: "Access denied." });
   const { id } = req.params;
 
-  const pet = await deletePet(id);
+  const pet = await Pet.findByIdAndDelete(id);
 
   res.status(200).json(pet);
 });
@@ -79,7 +79,7 @@ router.post("/adopt", [authMiddleware, validationSchema], async (req, res) => {
 router.post("/foster", [authMiddleware, validationSchema], async (req, res) => {
   const { petId } = req.body;
 
-  await fosterPet({ petId, userId: user._id });
+  await fosterPet({ petId, userId: req.user._id });
 
   res.status(200).json({ message: "Pet fostered" });
 });
@@ -87,7 +87,7 @@ router.post("/foster", [authMiddleware, validationSchema], async (req, res) => {
 router.post("/return", [authMiddleware, validationSchema], async (req, res) => {
   const { petId } = req.body;
 
-  await returnPet({ petId, userId: user._id });
+  await returnPet({ petId, userId: req.user._id });
 
   res.status(200).json({ message: "Pet returned" });
 });

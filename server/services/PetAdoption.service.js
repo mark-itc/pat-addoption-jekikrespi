@@ -3,18 +3,25 @@ const {
   removePetFromUser,
 } = require("../controllers/User.controller");
 const { updatePetStatus } = require("../controllers/Pet.controller");
+const { User } = require("../models/User.model");
+const { Pet } = require("../models/Pet.model");
 
 const adoptPet = async ({ userId, petId }) => {
-  await addPetToUser(userId, petId);
-  await updatePetStatus("adopted", petId);
+  const user = await User.findById(userId)
+  await User.findByIdAndUpdate(userId, { pets: [...user.pets, petId] })
+  await Pet.findByIdAndUpdate(petId, { status: "adopted" })
 };
+
 const fosterPet = async ({ userId, petId }) => {
-  await addPetToUser(userId, petId);
-  await updatePetStatus("fostered");
+  const user = await User.findById(userId)
+  await User.findByIdAndUpdate(userId, { pets: [...user.pets, petId] })
+  await Pet.findByIdAndUpdate(petId, { status: "fostered" })
 };
+
 const returnPet = async ({ userId, petId }) => {
-  await updatePetStatus("available");
-  await removePetFromUser(userId, petId);
+  const user = await User.findById(userId)
+  await User.findByIdAndUpdate(userId, { pets: [...user.pets.filter(pet => pet !== petId)] })
+  await Pet.findByIdAndUpdate(petId, { status: "available" })
 };
 
 const getUserPets = async (userId) => {

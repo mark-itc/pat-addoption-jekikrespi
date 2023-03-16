@@ -40,7 +40,7 @@ export default function NavBar() {
             Dashboard
           </Link>
         )}
-        {isLoggedIn && (
+        {isLoggedIn && JSON.parse(localStorage.getItem("user"))?.role == 2 && (
           <p className="navbar__link" onClick={() => setAddPetOpen(true)}>
             Add pet
           </p>
@@ -50,7 +50,7 @@ export default function NavBar() {
             className="navbar__link navbar__link-btn"
             onClick={() => setProfileDetailsOpen(true)}
           >
-            {JSON.parse(localStorage.getItem("user")).name}
+            {JSON.parse(localStorage.getItem("user"))?.name}
           </p>
         )}
         {isLoggedIn && (

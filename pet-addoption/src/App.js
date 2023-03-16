@@ -5,6 +5,7 @@ import HomePage from "./views/HomePage";
 import SearchPage from "./views/SearchPage";
 import PetDetails from "./views/PetDetails";
 import MyPets from "./views/MyPets";
+import Dashboard from "./views/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -16,12 +17,16 @@ const router = createBrowserRouter([
     element: <SearchPage />,
   },
   {
-    path: "/petdetails/:id",
+    path: "/petdetails/:petId",
     element: <PetDetails />,
   },
   {
     path: "/mypets",
     element: <MyPets />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
   },
 ]);
 
